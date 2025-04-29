@@ -1,20 +1,27 @@
-// lib/services/api_service.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../models/employee.dart';
+import '../models/visit.dart';
 
 class ApiService {
-  //   adb reverse tcp:8000 tcp:8000 t3 usb
-  // ayat le serveur
   static const _baseUrl = 'http://127.0.0.1:8000';
 
-  Future<Employee> fetchEmployee(int id) async {
-    final uri = Uri.parse('$_baseUrl/api/employes/$id');
+  Future<List<Visit>> fetchHistoricVisits(int employeeId) async {
+    final uri = Uri.parse('$_baseUrl/api/employes/$employeeId/historique-visites');
     final resp = await http.get(uri);
     if (resp.statusCode == 200) {
-      return Employee.fromJson(json.decode(resp.body));
-    } else {
-      throw Exception('Error ${resp.statusCode}: ${resp.body}');
+      final List<dynamic> data = json.decode(resp.body);
+      return data.map((e) => Visit.fromJson(e)).toList();
     }
+    throw Exception('Error ${resp.statusCode}: ${resp.body}');
+  }
+
+  Future<List<Visit>> fetchFutureVisits(int employeeId) async {
+    final uri = Uri.parse('$_baseUrl/api/employes/$employeeId/visites-futures');
+    final resp = await http.get(uri);
+    if (resp.statusCode == 200) {
+      final List<dynamic> data = json.decode(resp.body);
+      return data.map((e) => Visit.fromJson(e)).toList();
+    }
+    throw Exception('Error ${resp.statusCode}: ${resp.body}');
   }
 }
