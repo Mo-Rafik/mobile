@@ -1,3 +1,4 @@
+//code de suivi de santé (daily life)
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:fl_chart/fl_chart.dart';
